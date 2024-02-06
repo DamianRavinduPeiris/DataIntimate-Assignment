@@ -11,7 +11,7 @@ const rl = readline.createInterface({
 const app = express();
 let conncetion :null|mysql.Connection =null;
 app.use(express.json());
-app.use('/user',router(conncetion));
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000!");
   
@@ -66,6 +66,7 @@ function createAndUseDatabase(dbName :string,connection:null|mysql.Connection){
 
                         }else{
                             console.log('Table created successfully!')
+                            app.use('/user',router(conncetion));
                             console.log('Request to the /user endpoint to interact with the database')
                         }
                     })
