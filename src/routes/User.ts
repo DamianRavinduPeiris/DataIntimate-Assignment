@@ -44,6 +44,15 @@ const userRouter = (connection : mysql.Connection | null)=>{
 
 
     })
+    router.get('/getAll',(req:Request,res:Response)=>{
+        connection?.query(`SELECT * FROM user`,(er,result)=>{
+            if(er)return res.status(500).json({message : `An error occurred while retrieving the users! : ${er}`})   
+            if(result.length==0)return res.status(404).json({message : 'No users found!'})
+            else res.json({message : 'Users retrieved successfully!',data:result})
+
+        })
+
+    })
     return router;
 
 }
