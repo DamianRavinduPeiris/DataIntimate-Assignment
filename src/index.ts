@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import mysql from "mysql";
 import readline from "readline";
+import dotenv from 'dotenv';
+dotenv.config();
 
 import router  from './routes/User';
 const rl = readline.createInterface({
@@ -60,7 +62,7 @@ function createAndUseDatabase(dbName :string,connection:null|mysql.Connection){
                     console.log(e.message);
                 }else{
                     console.log("Database selected successfully!");
-                    connection.query(`CREATE TABLE IF NOT EXISTS user (id VARCHAR(255) PRIMARY KEY,name VARCHAR(255),username VARCHAR(255))`,(er,result)=>{
+                    connection.query(`CREATE TABLE IF NOT EXISTS user (id VARCHAR(255) PRIMARY KEY,name VARCHAR(255),username VARCHAR(255),password VARCHAR(255))`,(er,result)=>{
                         if(er){
                             console.log(er.message);
 
