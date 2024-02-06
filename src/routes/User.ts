@@ -16,7 +16,8 @@ const userRouter = (connection : mysql.Connection | null)=>{
     router.get('/search',(req:Request,res:Response)=>{
         connection?.query(`SELECT * FROM user WHERE id=?`,[req.query.id],(er,result)=>{
             if(er)res.status(500).json({message : `An error occurred while searching for the user : ${er}`})
-            else res.json({message : 'User found successfully!',data:result})
+            if(result.length==0)return res.status(404).json({message : 'User not found!'})
+            else res.json({message : 'User retrieved successfully!',data:result})
 
         })
 
@@ -27,6 +28,14 @@ const userRouter = (connection : mysql.Connection | null)=>{
             else res.json({message : 'User updated successfully!'})
 
         })
+
+    })
+    router.delete('/delete',(req:Request,res:Response)=>{
+        connection?.query(`DELETE FROM user WHERE id=?`,[req.query.id],(er,result)=>{
+            if(er)res.status(500).json({message : `An error occurred while deleting the user : ${er}`})
+            else res.json({message : 'User deleted successfully!'})
+        })
+
 
     })
     return router;
