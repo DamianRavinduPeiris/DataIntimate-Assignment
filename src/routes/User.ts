@@ -21,6 +21,14 @@ const userRouter = (connection : mysql.Connection | null)=>{
         })
 
     })
+    router.put('/update',(req:Request,res:Response)=>{
+        connection?.query(`UPDATE user SET name=?,username=? WHERE id=?`,[req.body.name,req.body.username,req.body.id],(er,result)=>{
+            if(er)res.status(500).json({message : `An error occurred while updating the user : ${er}`})
+            else res.json({message : 'User updated successfully!'})
+
+        })
+
+    })
     return router;
 
 }
