@@ -23,11 +23,17 @@ const userRouter = (connection : mysql.Connection | null)=>{
 
     })
     router.put('/update',(req:Request,res:Response)=>{
-        connection?.query(`UPDATE user SET name=?,username=? WHERE id=?`,[req.body.name,req.body.username,req.body.id],(er,result)=>{
-            if(er)res.status(500).json({message : `An error occurred while updating the user : ${er}`})
-            else res.json({message : 'User updated successfully!'})
+        connection?.query(`SELECT * FROM user WHERE id=?`,[req.query.id],(er,result)=>{
+            if(er)res.status(500).json({message : `An error occurred while searching for the user : ${er}`})
+            if(result.length==0)return res.status(404).json({message : 'User not found!'})
+            else connection?.query(`UPDATE user SET name=?,username=? WHERE id=?`,[req.body.name,req.body.username,req.body.id],(er,result)=>{
+                if(er)res.status(500).json({message : `An error occurred while updating the user : ${er}`})
+                else res.json({message : 'User updated successfully!'})
+    
+            })
 
         })
+        
 
     })
     router.delete('/delete',(req:Request,res:Response)=>{
