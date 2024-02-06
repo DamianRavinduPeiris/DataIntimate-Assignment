@@ -13,6 +13,14 @@ const userRouter = (connection : mysql.Connection | null)=>{
         })
     
     }); 
+    router.get('/search',(req:Request,res:Response)=>{
+        connection?.query(`SELECT * FROM user WHERE id=?`,[req.query.id],(er,result)=>{
+            if(er)res.status(500).json({message : `An error occurred while searching for the user : ${er}`})
+            else res.json({message : 'User found successfully!',data:result})
+
+        })
+
+    })
     return router;
 
 }
